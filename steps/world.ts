@@ -1,7 +1,9 @@
 import {After, Before, setDefaultTimeout, Status} from "@cucumber/cucumber";
 import { Browser, chromium, firefox, Page} from "@playwright/test";
-import { config } from '../support/config';
+import {config, DATABASE_CONFIG} from '../support/config';
+import {Pool} from 'pg';
 
+let dbPool: Pool;
 let page: Page;
 let browser: Browser;
 
@@ -9,7 +11,8 @@ setDefaultTimeout(60000)
 
 Before(async () => {
     try {
-
+        //https://www.techiediaries.com/postgresql-connection-pool-client-example/
+        dbPool = new Pool(DATABASE_CONFIG);
         browser = await chromium.launch({headless: false});
         const context = await browser.newContext();
         page = await context.newPage();
@@ -24,6 +27,8 @@ Before(async () => {
 });
 
 After(async function(Scenario) {
+    await dbPool.end();
+
     if (Scenario.result!.status === Status.FAILED) {
         await this.attach(await page.screenshot({path: `./Screenshots/${Scenario.pickle.name}.png`, fullPage: true}), "image/png")
     }
@@ -31,4 +36,4 @@ After(async function(Scenario) {
     await browser.close();
 });
 
-export {page, browser};
+export {page, browser, dbPool};
