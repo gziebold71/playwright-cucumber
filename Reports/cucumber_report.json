@@ -1,0 +1,71 @@
+[
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "get-offsets;i-run-a-query-to-return-listed-offsets-from-exchange-db",
+        "keyword": "Scenario",
+        "line": 4,
+        "name": "I run a query to return listed offsets from Exchange db",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1779063167
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "I select \"*\" from \"listed_offsets\" table where \"token_id\" \"=\" \"'0.0.48243577'\" and \"serial_number\" \"=\" \"'3'\"",
+            "match": {
+              "location": "steps/db.steps.ts:44"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 272946499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 6,
+            "name": "I verify that the \"retail_price\" from the database is \"214\"",
+            "match": {
+              "location": "steps/db.steps.ts:60"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2451375
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 194115333
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@demo",
+            "line": 3
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "get-offsets",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Get offsets",
+    "tags": [],
+    "uri": "features/db.feature"
+  }
+]
