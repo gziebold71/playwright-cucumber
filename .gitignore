@@ -1,5 +1,6 @@
 /Screenshots/**
 /Reports/**
+!/Reports/.gitignore
 /node_modules/**
 .idea
 *.env
