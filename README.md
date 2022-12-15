@@ -15,3 +15,10 @@ Example:
     ENV_FILE=qa.env
     npm run test
 
+
+## Running Tests Without Browser
+
+Some sets of tests do not require a running browser (headless or not). This is 
+accomplished by tagging scenarios with **@nobrowser**. In those cases, a browser window will
+not be opened for the scenario.
+

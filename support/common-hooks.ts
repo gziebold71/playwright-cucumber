@@ -54,22 +54,17 @@ Before(async function (this: ICustomWorld, { pickle }: ITestCaseHookParameter) {
         this.testName = pickle.name.replace(/\W/g, '-');
         this.feature = pickle;
         this.exchangeDbPool = exchangeDbPool;
-        this.browser = browser;
-        const context = await this.browser.newContext();
-        this.context = context;
+        let tags = pickle.tags.map(t=> t.name)
+        let useBrowser = !tags.includes("@nobrowser");
 
-        await this.context.tracing.start({ screenshots: true, snapshots: true });
-
-        this.page = await context.newPage();
-
-        this.page.on('console', async (msg: ConsoleMessage) => {
-            if (msg.type() === 'log') {
-                await this.attach(msg.text());
-            }
-        });
-
-        await this.page.goto(config.exchangeUrl);
-        console.log(`captured site title as ${await this.page.title()}`);
+        if(useBrowser) {
+            this.browser = browser;
+            const context = await this.browser.newContext();
+            this.context = context;
+            this.page = await context.newPage();
+            await this.page.goto(config.exchangeUrl);
+            console.log(`captured site title as ${await this.page.title()}`);
+        }
     }
     catch (error) {
         console.log(`chrome navigation to demo site failed due to ${error}`);
@@ -81,16 +76,22 @@ Before(async function (this: ICustomWorld, { pickle }: ITestCaseHookParameter) {
 After(async function(this: ICustomWorld, { result }: ITestCaseHookParameter) {
     await this.attach(`Status: ${result?.status}. Duration:${result.duration?.seconds}s`);
 
-    if (result.status === Status.FAILED) {
-        await this.attach(await this.page.screenshot({path: `./Screenshots/${this.feature.name}.png`, fullPage: true}), "image/png")
+    if(this.browser!=null) {
+        if (result.status === Status.FAILED) {
+            await this.attach(await this.page.screenshot({
+                path: `./Screenshots/${this.feature.name}.png`,
+                fullPage: true
+            }), "image/png")
+        }
+
+        await this.page?.close();
+        await this.context?.close();
     }
-
-    await this.page?.close();
-    await this.context?.close();
-
 });
 
 AfterAll(async function() {
     await exchangeDbPool.end();
-    await browser.close();
+    if(browser != null) {
+        await browser.close();
+    }
 })
