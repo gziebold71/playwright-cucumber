@@ -1,15 +1,25 @@
-let options = [
-    '--require-module ts-node/register',
-    '--require ./steps/*.steps.ts',
-    '--format progress',
-    '--format json:./Reports/cucumber_report.json'
-].join(' ');
+//https://github.com/cucumber/cucumber-js/blob/main/docs/configuration.md#finding-your-code
 
-let run_features = [
-    './features/',
-    options,
-].join(' ')
+const common = {
+    requireModule: ['ts-node/register'],
+    require: ['./steps/*.steps.ts', './support/*.ts'],
+    worldParameters: {
+        /**
+         * use these worldParameters for information that is needed solely within
+         * all scenarios regardless of the profile being run.
+         */
+    }
+}
 
 module.exports = {
-    test_runner: run_features
+    default: {
+        ...common,
+        format: ['progress', 'json:./Reports/cucumber_report.json'],
+        tags: "@demo",
+    },
+    ci: {
+        ...common,
+        format: ['html:./Reports/cucumber-report.html'],
+        tags: "@democi",
+    }
 };

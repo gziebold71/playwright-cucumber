@@ -1,19 +1,19 @@
+import { ICustomWorld } from '../support/custom-world';
 import {Given, When, Then} from "@cucumber/cucumber";
 import {expect} from '@playwright/test'
 import {config} from "../support/config";
-import {page} from './world'
 
 let apiResponse;
 
-Given('make a GET request for {string}', async (endpoint) => {
-    apiResponse = await page.request.get(config.baseApiUrl + endpoint, {
+Given('make a GET request for {string}', async function (this: ICustomWorld, uri: string) {
+    apiResponse = await this.page.request.get(config.exchangeApiUrl + uri, {
         headers: {
             'Content-Type': 'application/json'
         }
     });
 });
 
-Then('Verify the response status code is {string}', async (responseCode) => {
+Then('Verify the response status code is {string}', async function (responseCode) {
     expect(apiResponse.ok()).toBeTruthy();
 })
 

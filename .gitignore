@@ -1,4 +1,7 @@
 /Screenshots/**
+/Reports/**
 /node_modules/**
 .idea
+*.env
+!example.env
 
