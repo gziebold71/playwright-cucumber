@@ -11,13 +11,13 @@ Given('make a GET request for {string}', async function (this: ICustomWorld, uri
     apiResponse = await request(config.exchangeApiUrl).get(uri).set('Accept', 'application/json')
 });
 
-Then('Verify the response status code is {string}', async function (responseCode) {
-    expect(apiResponse.statusCode).toEqual(parseInt(responseCode));
+Then('Verify the response status code is {int}', async function (responseCode) {
+    expect(apiResponse.statusCode).toEqual(responseCode);
 })
 
-Then('I verify that {string} offsets are returned', async (countOfOffsets) => {
+Then('I verify that {int} offsets are returned', async (countOfOffsets) => {
     const body = await JSON.parse(apiResponse.text)
-    expect(body.offsets.length).toEqual(parseInt(countOfOffsets))
+    expect(body.offsets.length).toEqual(countOfOffsets)
 })
 
 Then('I verify that all returned offsets are of type {string}', async (listState) => {
