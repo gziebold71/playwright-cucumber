@@ -22,7 +22,7 @@ Then('I verify that {string} offsets are returned', async (countOfOffsets) => {
 
 Then('I verify that all returned offsets are of type {string}', async (listState) => {
     const body = await JSON.parse(apiResponse.text)
-    for (let i = 0; i < body.offsets.length; i++) {
-        expect(body.offsets[i].list_state).toEqual(listState);
-    }
+    body.offsets.forEach(offset =>{
+        expect(offset.list_state).toEqual(listState)
+    });
 })
