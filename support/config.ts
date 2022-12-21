@@ -8,9 +8,11 @@ dotenv.config({ path: process.env.ENV_FILE });
  * to do things like browser settings, database connection information,
  * urls prior to running any scenarios.
  *
+ *
  */
 
 const browserOptions: LaunchOptions = {
+    //convert string process.env.HEADLESS from string to boolean
     headless: process.env.HEADLESS=='true',
     slowMo: 0,
     args: ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream'],
@@ -29,6 +31,9 @@ export const config = {
     exchangeDbUser: process.env.EXCHANGE_DB_USER,
     exchangeDbPassword: process.env.EXCHANGE_DB_PASSWORD,
     exchangeDbDatabase: process.env.EXCHANGE_DB_DATABASE,
+    //convert string process.env.HEADLESS from string to boolean
+    isMobile: process.env.IS_MOBILE=='true',
+    device: process.env.MOBILE_DEVICE_TYPE,
     browserOptions,
 
 };

@@ -2,7 +2,7 @@ import {Given, When, Then} from "@cucumber/cucumber";
 import {expect} from '@playwright/test'
 import {ICustomWorld} from "../support/custom-world";
 
-const email = 'input[type="email"]';
+const email = '[type="email"]';
 const sellOffsetsButton = 'button[type="submit"]'
 const helperText = '[id="SMUI-textfield-helper-text-0"]'
 
@@ -14,6 +14,10 @@ When('on the login page I tap the Sell Offsets button', async function (this: IC
     await this.page.locator(sellOffsetsButton).click();
 })
 
+When('I login as user {string}', async function(emailAddress){
+    await this.page.locator(email).fill(emailAddress);
+    await this.page.locator(sellOffsetsButton).click();
+})
 
 Then('on the login page I do not see the helper error message', async function (this: ICustomWorld) {
     const actualText =  await this.page.locator(helperText).getAttribute('aria-hidden')

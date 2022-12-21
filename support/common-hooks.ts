@@ -17,7 +17,10 @@ import {
     FirefoxBrowser,
     webkit,
     WebKitBrowser,
+    devices
 } from '@playwright/test';
+
+const mobileDevice = devices[config.device];
 
 let browser: ChromiumBrowser | FirefoxBrowser | WebKitBrowser;
 let exchangeDbPool: Pool;
@@ -59,7 +62,10 @@ Before(async function (this: ICustomWorld, { pickle }: ITestCaseHookParameter) {
 
         if(useBrowser) {
             this.browser = browser;
-            const context = await this.browser.newContext();
+            let context = await this.browser.newContext();
+            if (config.isMobile) {
+                context = await this.browser.newContext({viewport: mobileDevice.viewport, userAgent: mobileDevice.userAgent});
+            }
             this.context = context;
             this.page = await context.newPage();
             await this.page.goto(config.exchangeUrl);

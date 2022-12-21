@@ -9,6 +9,7 @@ let apiResponse;
 
 Given('make a GET request for {string}', async function (this: ICustomWorld, uri: string) {
     apiResponse = await request(config.exchangeApiUrl).get(uri).set('Accept', 'application/json')
+    console.log(config.exchangeApiUrl + uri)
 });
 
 Then('Verify the response status code is {int}', async function (responseCode) {
@@ -18,6 +19,12 @@ Then('Verify the response status code is {int}', async function (responseCode) {
 Then('I verify that {int} offsets are returned', async (countOfOffsets) => {
     const body = await JSON.parse(apiResponse.text)
     expect(body.offsets.length).toEqual(countOfOffsets)
+})
+
+Then('I verify that API error code is {int} with the message of {string}', async (errorCode, errorMessage) => {
+    const body = await JSON.parse(apiResponse.text)
+    expect(body.error.code).toEqual(errorCode)
+    expect(body.error.message).toEqual(errorMessage)
 })
 
 Then('I verify that all returned offsets are of type {string}', async (listState) => {

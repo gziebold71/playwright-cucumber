@@ -22,3 +22,12 @@ Some sets of tests do not require a running browser (headless or not). This is
 accomplished by tagging scenarios with **@nobrowser**. In those cases, a browser window will
 not be opened for the scenario.
 
+## Running in mobile/table view
+
+If you want to run this in a mobile or table view then you can set the .env property of 
+`IS_MOBILE` to true and setting the `MOBILE_DEVICE_TYPE` property to the device you would
+like to test on.
+
+The list of available devices can be found here: 
+https://github.com/microsoft/playwright/blob/main/packages/playwright-core/src/server/deviceDescriptorsSource.json
+
